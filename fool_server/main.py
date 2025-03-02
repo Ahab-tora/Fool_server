@@ -16,7 +16,8 @@ host = global_variables.host
 port = global_variables.port
 databases_path = os.getcwd() + '\\data\\files_db'
 databases_path = global_variables.databases_path
-for asset_type in global_variables.assets_types:
+
+'''for asset_type in global_variables.assets_types:
     asset_type_path = global_variables.assets_path + '\\' + asset_type
 
     asset_type_name = str(asset_type_path).split('\\')[-1]
@@ -31,7 +32,7 @@ for asset_type in global_variables.assets_types:
 
 
 watchdog_thread = threading.Thread(target=watchdog, args=(Path(global_variables.assets_path),), daemon=True)
-watchdog_thread.start()
+watchdog_thread.start()'''
 
 
 
@@ -258,62 +259,6 @@ async def set_for_review(asset_type:str,file:str):
 
     await connection.commit()
     await connection.close()"""
-
-
-@project_router.get('/get_extension')
-async def get_extension(name:str):
-
-    connection = await aiosqlite.connect(databases_path + '\\publish.db')
-    cursor = await connection.cursor()
-
-    path_query = ('''
-            SELECT path
-            FROM publish_table
-            WHERE name = ?
-            ''')
-    await cursor.execute(path_query,(name,))
-    file_row = await cursor.fetchall() #returns a table and we only need the first element, that's why we add [0][0] at the end
-    file_path = str(file_row[0][0])
-
-    await connection.close()
-
-    return file_path
-
-
-@project_router.get('/refresh_publish_view')
-async def refresh_publish_view():
-        connection = await aiosqlite.connect(databases_path + '\\' + 'publish.db')
-        cursor = await connection.cursor()
-
-        query = ('''
-        SELECT name 
-        FROM publish_table
-        ''')
-
-        await cursor.execute(query)
-
-        results = await cursor.fetchall()
-        await connection.close()
-        return results
-
-
-@project_router.delete('/delete_selection_from_publish/{selection}')
-async def delete_selection_from_publish(selection:str):
-        '''
-        Delete the selection from the publish table
-        '''
-        connection = await aiosqlite.connect(databases_path + '\\' + 'publish.db')
-        cursor = await connection.cursor()
-
-        query = ('''
-        DELETE
-        FROM publish_table
-        WHERE name = ?
-        ''')
-        await cursor.execute(query,(selection,))
-        
-        await connection.commit()
-        await connection.close()
 
 project_router.include_router(sequences_router)
 app.include_router(project_router)

@@ -3,10 +3,10 @@ import os
 import sys
 
 # --- --- WARNING --- --- #
-'''
+"""
 Use double \ everywhere BUT if it's a path to a remote server use quadruple slashes
 example: '\\\\Storage\\movieName'
-'''
+"""
 
 # --- --- Config
 #names of the folders that are your asset types
@@ -30,20 +30,20 @@ team_tools_path = pipeline_path + '\\pipeline\\team_tools'
 
 # --- --- Config
 #--- Assets
-#assets_maya_departments =
-assets_status_list = 'edit','publish'
+assets_maya_departments = 'assetLayout','cloth','dressing','groom','lookdev','modeling','rig','sculpt'
+assets_status = 'edit','publish'
 assets_houdini_departments = 'abc','audio','comp','desk','flip','geo','hdz','render','scripts','sim','tex','video'
 
 #--- Sequences
 sequences_maya_departments ='anim','layout','render'
-sequences_status_list = 'edit','publish'
+sequences_status = 'edit','publish'
 sequences_houdini_departments = 'abc','audio','comp','desk','flip','geo','hdz','render','scripts','sim','tex','video'
 
 # --- --- Version
 version = '1.0.25022025'
 
 # --- --- Server
-host = '10.69.240.231'
+host = '192.168.56.1'
 port  = 8000
 router_prefix = "/END"
 

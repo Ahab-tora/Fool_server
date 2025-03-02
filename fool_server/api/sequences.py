@@ -14,15 +14,33 @@ def root():
     return "Ping!"
 
 '''
-get shots of sequence	/sequence
-get files of shot	/shot/status/department
+get sequences
+get shots	/sequence ok
 get files of shot	/sequence/shot/status/department
 get file path for ref drop	/sequence/shot/status/department ???
 get path of file	/sequence/shot/status/department ???
 '''
 
-@sequences_router.get('/get_shots_of_sequence/{sequence}')
-async def get_shots_of_sequence(sequence):
+@sequences_router.get('/get_sequences')
+def get_sequences():
+    return global_variables.sequences
+
+@sequences_router.get('/get_sequences_maya_departments')
+def get_sequences_maya_departments():
+    return global_variables.sequences_maya_departments
+
+@sequences_router.get('/get_sequences_status')
+def get_sequences_status():
+    return global_variables.sequences_status
+
+@sequences_router.get('/get_sequences_houdini_departments')
+def get_sequences_houdini_departments():
+    return global_variables.sequences_houdini_departments
+
+
+
+@sequences_router.get('/get_shots/{sequence}')
+async def get_shots(sequence):
     '''returns the shots of a given sequence'''
 
     connection = await aiosqlite.connect(databases_path + '\\' + sequence + '.db')
@@ -31,11 +49,13 @@ async def get_shots_of_sequence(sequence):
     await cursor.execute(f'''SELECT name FROM {sequence}_shots_table''')
     results = await cursor.fetchall()
     await connection.close()
-    
-    return results
+    shots = []
+    for shot in results:
+        shots.append(shot[0])
+    return shots
 
-@sequences_router.get('/get_files_of_shot/{sequence}/{shot}/{status}/{department}')
-async def get_files_of_shot(sequence:str,shot:str,status:str,department:str):
+@sequences_router.get('/get_files/{sequence}/{shot}/{status}/{department}')
+async def get_files(sequence:str,shot:str,status:str,department:str):
     '''
     returns the files of an a shot status and department
     '''
@@ -63,5 +83,21 @@ async def get_files_of_shot(sequence:str,shot:str,status:str,department:str):
 
     results_formatted = list(reversed(sorted(results,key =lambda x: x[1])))
     await connection.close()
-    print(results_formatted)
+    
     return results_formatted 
+
+@sequences_router.get("/get_shot_path/{sequence}/{shot}")
+async def get_shot_path(sequence:str,shot:str): 
+
+    connection = await aiosqlite.connect(databases_path + '\\' + sequence + '.db')
+    cursor= await connection.cursor()
+
+    query = (f'''SELECT path 
+                        FROM {sequence}_shots_table 
+                        WHERE name = ? ''')
+    await cursor.execute(query,(shot,))
+    file_row = await cursor.fetchone()
+    file_path = file_row[0]
+    await connection.close()
+    
+    return file_path
