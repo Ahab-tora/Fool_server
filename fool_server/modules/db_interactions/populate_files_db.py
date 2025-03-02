@@ -41,18 +41,22 @@ def populate_files_treeview_db(scan_path:str,table_path:str):
 
 
 def populate_assets_db(scan_path:str,asset_type:str,table_path:str):
-
+    
     assets = get_assets(scan_path=scan_path)
 
     insert_data_to_asset_table(table_path=table_path,assets=assets,asset_type=asset_type,manage_connection=True)
 
 
 def populate_assets_content_db(pipeline_path:str,asset_type:str,table_path:str):
-
+    
     data = get_assets_content(pipeline_path=pipeline_path,asset_type=asset_type,table_path=table_path)
-
     insert_asset_content_data(table_path=table_path,asset_type=asset_type,manage_connection=True,data=data)
 
+    '''try:
+        insert_asset_content_data(table_path=table_path,asset_type=asset_type,manage_connection=True,data=data)
+    except Exception as e:
+        print('populate_assets_content_db error:',e)
+    return data'''
 
 table_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs\\pipeline\\END_data\\files_db'
 scan_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs'

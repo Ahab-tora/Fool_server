@@ -28,7 +28,8 @@ class MyHandler(FileSystemEventHandler):
             self.last_called = call
             return
         self.last_called = call
-        print(event.src_path)
+        print(event)
+        
         try:
             asset_type,asset_name = self.get_asset_type(path=event.src_path)
             print(asset_type,asset_name)
@@ -45,7 +46,7 @@ class MyHandler(FileSystemEventHandler):
         check if the db needs to be updated , if yes returns 
         '''
         print(f'got signal for {path}')
-        path =Path(path)
+        path = Path(path)
         if path.is_relative_to(global_variables.assets_path):
             asset_type,asset_name = path.relative_to(global_variables.assets_path).parts[:2]
             return asset_type,asset_name
@@ -55,13 +56,14 @@ class MyHandler(FileSystemEventHandler):
 
 def update_database(asset_type):
     print('updating', asset_type)
-    populate_assets_db(scan_path=global_variables.assets_path,
+
+    populate_assets_db(scan_path=global_variables.assets_path + '\\' + asset_type,
                        asset_type=asset_type,
                        table_path= global_variables.databases_path + '\\' + asset_type +'.db')
-    populate_assets_content_db(pipeline_path=global_variables.pipeline_path,
+    data = populate_assets_content_db(pipeline_path=global_variables.pipeline_path,
                                asset_type=asset_type,
                                table_path= global_variables.databases_path  + '\\' + asset_type +'.db')
-
+    #print(data)
 
 
 
