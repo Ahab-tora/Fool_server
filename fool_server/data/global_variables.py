@@ -16,6 +16,7 @@ sequences = ['SQ0010','SQ0020','SQ0030','SQ0040','SQ0050','SQ0060','SQ0070','SQ0
 asset_template_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs\\04_asset\\template\\_template_workspace_asset'
 shot_template_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs\\05_shot\\_template_workspace_shot'
 
+
 # --- --- Self paths
 server_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 databases_path = server_path + '\\data\\files_db'

@@ -37,6 +37,9 @@ def get_sequences_status():
 def get_sequences_houdini_departments():
     return global_variables.sequences_houdini_departments
 
+@sequences_router.get('/get_shots_template_path')
+def get_shots_template_path():
+    return global_variables.shot_template_path
 
 
 @sequences_router.get('/get_shots/{sequence}')
