@@ -94,11 +94,11 @@ def get_shots_content(sequence:str,table_path:str)->list:
                 continue
 
             #maya data
-            #for status in global_variables.sequences_status_list:
+            #for status in global_variables.sequences_status:
             for department in global_variables.sequences_maya_departments:
                 
                 #for department in global_variables.sequences_maya_departments:
-                for status in global_variables.sequences_status_list:
+                for status in global_variables.sequences_status:
                     try:
                         shot_content_path = Path(str(sequence_path) + '\\' + shot_name + '\\maya\\scenes' + '\\' + department + '\\' + status)
 

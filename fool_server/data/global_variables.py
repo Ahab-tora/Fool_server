@@ -11,7 +11,7 @@ example: '\\\\Storage\\movieName'
 # --- --- Config
 #names of the folders that are your asset types
 assets_types = 'character','item','prop','set'
-sequences = ['SQ0010','SQ0020','SQ0030','SQ0040','SQ0050','SQ0060','SQ0070','SQ0080','SQ0090','SQ0100','SQ0100','SQ0120','SQ0130','SQ0010','SQ0140']
+sequences = ['SQ0010','SQ0020','SQ0030','SQ0040','SQ0050','SQ0060','SQ0070','SQ0080','SQ0090','SQ0100','SQ0120','SQ0130','SQ0010','SQ0140']
 #path to the template that is used to create assets
 asset_template_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs\\04_asset\\template\\_template_workspace_asset'
 shot_template_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs\\05_shot\\_template_workspace_shot'
@@ -20,7 +20,7 @@ shot_template_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs\\05_shot\\_templat
 # --- --- Self paths
 server_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 databases_path = server_path + '\\data\\files_db'
-assets_path = server_path + '\\data\\files_db\\assets'
+assets_db_path = server_path + '\\data\\files_db\\assets'
 sequences_db_path = server_path + '\\data\\files_db\\sequences'
 
 # --- --- Pipeline paths
@@ -44,7 +44,7 @@ sequences_houdini_departments = 'abc','audio','comp','desk','flip','geo','hdz','
 version = '1.0.25022025'
 
 # --- --- Server
-host = '192.168.56.1'
+host = '10.69.240.231'
 port  = 8000
 router_prefix = "/END"
 

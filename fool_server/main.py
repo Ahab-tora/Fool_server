@@ -14,8 +14,8 @@ import data.global_variables as global_variables
 
 host = global_variables.host
 port = global_variables.port
-databases_path = os.getcwd() + '\\data\\files_db'
-databases_path = global_variables.databases_path
+#databases_path = os.getcwd() + '\\data\\files_db'
+databases_path = global_variables.assets_db_path
 
 '''for asset_type in global_variables.assets_types:
     asset_type_path = global_variables.assets_path + '\\' + asset_type
@@ -142,6 +142,8 @@ async def get_files_of_assset(asset_type:str,asset_name:str,department:str,statu
 
     await cursor.execute(asset_id_query,(asset_name,))
     asset_row = await cursor.fetchone()
+    if not asset_row:
+        return None
     asset_id = asset_row[0]
 
     files_query = (f'''SELECT name,last_modification,comment 
@@ -228,37 +230,7 @@ async def get_path_of_file(asset_type:str,file:str):
     return file_path
 
 
-"""@project_router.post('/set_for_review/{asset_type}/{file}')
-async def set_for_review(asset_type:str,file:str):
 
-    connection = await aiosqlite.connect(databases_path + '\\' + asset_type + '.db')
-    cursor= await connection.cursor()
-
-    asset_query = (f'''
-        SELECT name,path,department
-        FROM {asset_type}_data_table
-        WHERE name == ?
-        ''')
-    
-    await cursor.execute(asset_query,(file,))
-    asset_data= await cursor.fetchone()
- 
-    await connection.close()
-
-    #--- --- ---
-
-    connection = await aiosqlite.connect(databases_path + '\\publish.db')
-    cursor = await connection.cursor()
-
-    insert_query = (f'''
-        INSERT OR REPLACE INTO publish_table
-        (name, path,department)
-        VALUES (?,?,?)
-        ''')
-    await cursor.execute(insert_query,asset_data)
-
-    await connection.commit()
-    await connection.close()"""
 
 project_router.include_router(sequences_router)
 app.include_router(project_router)
