@@ -14,14 +14,15 @@ import data.global_variables as global_variables
 
 host = global_variables.host
 port = global_variables.port
-#databases_path = os.getcwd() + '\\data\\files_db'
+
+
 databases_path = global_variables.assets_db_path
 
-'''for asset_type in global_variables.assets_types:
+for asset_type in global_variables.assets_types:
     asset_type_path = global_variables.assets_path + '\\' + asset_type
 
     asset_type_name = str(asset_type_path).split('\\')[-1]
-    table_path = global_variables.databases_path +'\\'+asset_type_name+'.db'
+    table_path = global_variables.assets_db_path +'\\'+asset_type_name+'.db'
 
     populate_assets_db(scan_path=global_variables.assets_path+'\\'+asset_type_name,
                        asset_type=asset_type_name ,
@@ -32,7 +33,7 @@ databases_path = global_variables.assets_db_path
 
 
 watchdog_thread = threading.Thread(target=watchdog, args=(Path(global_variables.assets_path),), daemon=True)
-watchdog_thread.start()'''
+watchdog_thread.start()
 
 
 

@@ -59,10 +59,10 @@ def update_database(asset_type):
 
     populate_assets_db(scan_path=global_variables.assets_path + '\\' + asset_type,
                        asset_type=asset_type,
-                       table_path= global_variables.databases_path + '\\' + asset_type +'.db')
+                       table_path= global_variables.assets_db_path + '\\' + asset_type +'.db')
     data = populate_assets_content_db(pipeline_path=global_variables.pipeline_path,
                                asset_type=asset_type,
-                               table_path= global_variables.databases_path  + '\\' + asset_type +'.db')
+                               table_path= global_variables.assets_db_path  + '\\' + asset_type +'.db')
     #print(data)
 
 

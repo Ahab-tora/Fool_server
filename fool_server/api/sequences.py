@@ -165,8 +165,8 @@ async def add_comment(sequence:str,shot:str,department:str,status:str,file:str,c
         return None
     shot_id = shot_row[0]
 
-    commentInsert_query = (f'''INSERT OR REPLACE INTO {sequence}_data_table 
-                       SET comment
+    commentInsert_query = (f'''UPDATE {sequence}_data_table 
+                       SET comment = ?
                        WHERE name = ?
                        AND parent_id IS ?
                        AND status = ?
@@ -174,5 +174,6 @@ async def add_comment(sequence:str,shot:str,department:str,status:str,file:str,c
                       ''')
 
     await cursor.execute(commentInsert_query,(comment,file,shot_id,status,department,))
+    await connection.commit()
     await connection.close()
    
