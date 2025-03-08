@@ -1,0 +1,84 @@
+{
+    "name": "maya",
+    "parentElement": null,
+    "inPath": "maya",
+    "outPath": "scenes",
+    "layer": 0,
+    "components": [
+        {
+            "name": "anim",
+            "parentElement": "maya",
+            "inPath": "anim",
+            "outPath": "",
+            "layer": 0,
+            "components": [
+                {
+                    "name": "edit",
+                    "parentElement": "anim",
+                    "inPath": "edit",
+                    "outPath": "",
+                    "layer": 0,
+                    "components": []
+                },
+                {
+                    "name": "publish",
+                    "parentElement": "anim",
+                    "inPath": "publish",
+                    "outPath": "",
+                    "layer": 0,
+                    "components": []
+                }
+            ]
+        },
+        {
+            "name": "layout",
+            "parentElement": "maya",
+            "inPath": "layout",
+            "outPath": "",
+            "layer": 0,
+            "components": [
+                {
+                    "name": "edit",
+                    "parentElement": "layout",
+                    "inPath": "edit",
+                    "outPath": "",
+                    "layer": 0,
+                    "components": []
+                },
+                {
+                    "name": "publish",
+                    "parentElement": "layout",
+                    "inPath": "publish",
+                    "outPath": "",
+                    "layer": 0,
+                    "components": []
+                }
+            ]
+        },
+        {
+            "name": "render",
+            "parentElement": "maya",
+            "inPath": "render",
+            "outPath": "",
+            "layer": 0,
+            "components": [
+                {
+                    "name": "edit",
+                    "parentElement": "render",
+                    "inPath": "edit",
+                    "outPath": "",
+                    "layer": 0,
+                    "components": []
+                },
+                {
+                    "name": "publish",
+                    "parentElement": "render",
+                    "inPath": "publish",
+                    "outPath": "",
+                    "layer": 0,
+                    "components": []
+                }
+            ]
+        }
+    ]
+}

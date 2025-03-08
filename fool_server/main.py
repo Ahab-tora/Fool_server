@@ -78,7 +78,6 @@ def get_project_name():
     'returns the project name'
     return global_variables.project_name
 
-
 @project_router.get('/get_ftrack_server_url')
 def get_ftrack_server_url():
     return global_variables.ftrack_server_url

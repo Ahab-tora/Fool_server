@@ -24,7 +24,7 @@ class MyHandler(FileSystemEventHandler):
         time_passed = call - self.last_called
 
         #time filter to avoid having more than 1 call/second
-        if time_passed  <= 1:
+        if time_passed  <= 0.3:
             self.last_called = call
             return
         self.last_called = call

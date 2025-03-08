@@ -41,7 +41,7 @@ sequences_status = 'edit','publish'
 sequences_houdini_departments = 'abc','audio','comp','desk','flip','geo','hdz','render','scripts','sim','tex','video'
 
 # --- --- Version
-version = '1.0.25022025'
+version = '1.0.20253005'
 
 # --- --- Server
 host = '10.69.240.231'
