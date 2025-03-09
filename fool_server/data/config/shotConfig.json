@@ -1,0 +1,191 @@
+[
+    {
+        "name": "maya",
+        "parentElement": null,
+        "inPath": "maya",
+        "outPath": "scenes",
+        "layer": 0,
+        "childrenElements": [
+            {
+                "name": "anim",
+                "parentElement": "maya",
+                "inPath": "anim",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": [
+                    {
+                        "name": "edit",
+                        "parentElement": "anim",
+                        "inPath": "edit",
+                        "outPath": "",
+                        "layer": 0,
+                        "childrenElements": []
+                    },
+                    {
+                        "name": "publish",
+                        "parentElement": "anim",
+                        "inPath": "publish",
+                        "outPath": "",
+                        "layer": 0,
+                        "childrenElements": []
+                    }
+                ]
+            },
+            {
+                "name": "layout",
+                "parentElement": "maya",
+                "inPath": "layout",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": [
+                    {
+                        "name": "edit",
+                        "parentElement": "layout",
+                        "inPath": "edit",
+                        "outPath": "",
+                        "layer": 0,
+                        "childrenElements": []
+                    },
+                    {
+                        "name": "publish",
+                        "parentElement": "layout",
+                        "inPath": "publish",
+                        "outPath": "",
+                        "layer": 0,
+                        "childrenElements": []
+                    }
+                ]
+            },
+            {
+                "name": "render",
+                "parentElement": "maya",
+                "inPath": "render",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": [
+                    {
+                        "name": "edit",
+                        "parentElement": "render",
+                        "inPath": "edit",
+                        "outPath": "",
+                        "layer": 0,
+                        "childrenElements": []
+                    },
+                    {
+                        "name": "publish",
+                        "parentElement": "render",
+                        "inPath": "publish",
+                        "outPath": "",
+                        "layer": 0,
+                        "childrenElements": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "houdini",
+        "parentElement": null,
+        "inPath": "houdini",
+        "outPath": "",
+        "layer": 0,
+        "childrenElements": [
+            {
+                "name": "abc",
+                "parentElement": "houdini",
+                "inPath": "abc",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "audio",
+                "parentElement": "houdini",
+                "inPath": "audio",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "comp",
+                "parentElement": "houdini",
+                "inPath": "comp",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "desk",
+                "parentElement": "houdini",
+                "inPath": "desk",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "flip",
+                "parentElement": "houdini",
+                "inPath": "flip",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "geo",
+                "parentElement": "houdini",
+                "inPath": "geo",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "hdz",
+                "parentElement": "houdini",
+                "inPath": "hdz",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "render",
+                "parentElement": "houdini",
+                "inPath": "render",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "scripts",
+                "parentElement": "houdini",
+                "inPath": "scripts",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "sim",
+                "parentElement": "houdini",
+                "inPath": "sim",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "tex",
+                "parentElement": "houdini",
+                "inPath": "tex",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            },
+            {
+                "name": "video",
+                "parentElement": "houdini",
+                "inPath": "video",
+                "outPath": "",
+                "layer": 0,
+                "childrenElements": []
+            }
+        ]
+    }
+]

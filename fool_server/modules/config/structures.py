@@ -1,4 +1,5 @@
 import os
+
 class Element():
     def __init__(self,name:str = 'Element',inPath:str = '',outPath:str = '',layer:int = 0):
         self.name = name
@@ -6,15 +7,15 @@ class Element():
         self.inPath = inPath
         self.outPath = outPath
         self.layer = layer
-        self.components = []
+        self.childrenElements = []
 
-    def addComponent(self,component):
-        component.parentElement = self
-        self.components.append(component)
+    def addChildElement(self,element):
+        element.parentElement = self
+        self.childrenElements.append(element)
 
-    def addComponents(self,components:list):
-        for component in components:
-            self.addComponent(component=component)
+    def addChildrenElements(self,elements:list):
+        for element in elements:
+            self.addChildElement(element=element)
     
     def fullPath(self) -> str:
         pathsList = []
@@ -34,20 +35,19 @@ class Element():
                 return self.parentElement.toDict(lowerHierachy=False,upperHierachy=True)
             else:
                 return self.toDict(lowerHierachy=True,upperHierachy=False)
-        componentsDict = []
-        if lowerHierachy and self.components:
             
-            for component in self.components:
-                componentDict = component.toDict()
-                componentsDict.append(componentDict)
+        childrenElementsDict = []
+        if lowerHierachy and self.childrenElements:
+            for childElement in self.childrenElements:
+                childrenElementsDict.append(childElement.toDict())
 
         elementDict = {
             'name':self.name,
-            'parentElement' :self.parentElement.name if self.parentElement  else None,
+            'parentElement' :self.parentElement.name if self.parentElement else None,
             'inPath' : self.inPath ,
             'outPath' : self.outPath ,
             'layer' : self.layer ,
-            'components' : componentsDict
+            'childrenElements' : childrenElementsDict
             }
         return elementDict
 
@@ -60,7 +60,7 @@ class Element():
             outPath =data['outPath'],
             layer =data.get('layer', 0)  )
 
-        for component_data in data.get('components', []):
-            component = cls.fromDict(component_data)
-            element.addComponent(component)
+        for element_data in data.get('childrenElements', []):
+            childElement = cls.fromDict(element_data)
+            element.addChildElement(childElement)
         return element
