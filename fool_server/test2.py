@@ -4,8 +4,8 @@
 #create a folder if it does not exist --> ex: files_db/sequences
 #check the first layer of elements and create database for each
 #fill database with the data using the config file
-
-import sqlite3,json,pprint
+78
+import sqlite3,json,pprint,os
 from pathlib import Path
 import datetime 
 from data import global_variables
@@ -75,13 +75,13 @@ def getFileData(filePath: str) -> tuple:
     # Return as a tuple
     return (
         name,
-        type,
         path,
+        type,
         size,
-        
         last_modification,
-        parent
     )
+
+
 
 def getFilesData(filePath:str)->list[tuple]:
     '''
@@ -93,16 +93,6 @@ def getFilesData(filePath:str)->list[tuple]:
         filesData.append(getFileData(filePath=file))
     return filesData
 
-#getFilesData(filePath='C:\\Users\\laure\\OneDrive\\Bureau\\05_shit')
-
-
-#begin with one file path
-#C:\Users\laure\OneDrive\Bureau\05_shit
-import os
-
-#prendre tous les elemnts(sequence,asset_type) depuis une list(ecrite ou iterdir), avec un path ou les elements sont situés
-#regarde ce qu'il y a dedans --> shots,assets
-inPath = 'C:\\Users\\laure\\OneDrive\\Bureau\\05_shit\\SQ0010\\SH0010'
 
 
 def insertElementData(tablePath:str,data:tuple,manageConnection:bool=True,cursor=None):
@@ -124,6 +114,7 @@ def insertElementData(tablePath:str,data:tuple,manageConnection:bool=True,cursor
     return elementId
 
 
+
 def insertFileData(tablePath:str,data:tuple,manageConnection:bool = True,parentId:int = 0,cursor = None):
 
     if manageConnection is True:
@@ -143,6 +134,7 @@ def insertFileData(tablePath:str,data:tuple,manageConnection:bool = True,parentI
         connection.close()
 
 
+
 def insertFilesData(tablePath:str,filesData:list[tuple],manageConnection:bool = True,parentId:int = None,cursor = None):
 
     if manageConnection is True:
@@ -151,14 +143,14 @@ def insertFilesData(tablePath:str,filesData:list[tuple],manageConnection:bool = 
 
     fullData = []
     for fileData in filesData:
-        fullFileData =fileData + (parentId,)
-        print(fullFileData)
+        print(parentId)
+        fullFileData = fileData + (parentId,)
         fullData.append(fullFileData)
 
     query = '''
     INSERT OR IGNORE INTO filesTable(
-    name,fullPath,type,size,lastModif,comment,parentId)
-    VALUES (?,?,?,?,?,?,?)
+    name,fullPath,type,size,lastModif,parentId)
+    VALUES (?,?,?,?,?,?)
     '''
     cursor.executemany(query,fullData)
 
@@ -182,25 +174,32 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
     folderStructure = getFolderStructure(path=contentPath)
 
 
-    def compare(config:dict,folderStructure,parentPath=''):
+    def compare(cursor,config:dict,folderStructure,parentPath=''):
 
         if config['inPath'] in folderStructure:
             currentStructure = folderStructure[config['inPath']]
+            
             fullPath = os.path.join(parentPath, config['inPath'])
+            if not fullPath.endswith(config['outPath']):
+                print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                fullPath = os.path.join(parentPath, config['inPath'],config['outPath'])
 
-            print(fullPath)
-            connection = sqlite3.connect(tablePath)
-            cursor=connection.cursor()
             parentId=0
-            if parentPath:
-                query = '''
-                SELECT id FROM elementsTable
-                WHERE name = ? AND fullPath = ?
-                '''
-                
-                cursor.execute(query, (name, fullPath))
-                parentId = cursor.fetchone()
 
+            if parentPath:
+                query = '''SELECT id FROM elementsTable WHERE fullPath = ?'''
+                cursor.execute(query, (str(parentPath),))
+                result = cursor.fetchone()
+                if result:
+                    parentId = result[0]
+                else:
+                    parentId = None
+
+            print('--- --- ---')
+            print(fullPath)
+            print(parentPath)
+            print(parentId)
+            print('--- --- ---')
             elementData = (
             config['name'],  
             fullPath,
@@ -208,43 +207,67 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
             config['outPath'],  
             config.get('layer', 0), 
             parentId)
+
             filesData = getFilesData(fullPath)
         
-            insertElementData(tablePath=tablePath,data=elementData,manageConnection=False,cursor=cursor)
-            insertFilesData(tablePath=tablePath,filesData=filesData,manageConnection=False,cursor=cursor)
-
+            parentId = insertElementData(tablePath=tablePath,data=elementData,manageConnection=False,cursor=cursor)
+            insertFilesData(tablePath=tablePath,filesData=filesData,parentId=parentId,manageConnection=False,cursor=cursor)
+            
             connection.commit()
-            connection.close()
+            
 
             if config['outPath'] and config['outPath'] in currentStructure:
-                fullPath = os.path.join(fullPath, config['outPath'])
-                
+                fullPath = os.path.join(parentPath, config['inPath'])
+                if not fullPath.endswith(config['outPath']):
+                    fullPath = os.path.join(fullPath, config['outPath'])
+                            
                 currentStructure = currentStructure[config['outPath']]
 
             if config['childrenElements']:
                 for childConfig in config['childrenElements']:
-                    compare(config=childConfig,folderStructure=currentStructure,parentPath=fullPath)
+                    compare(cursor=cursor,config=childConfig,folderStructure=currentStructure,parentPath=fullPath)
             
-    
     connection = sqlite3.connect(tablePath)
-    cursor=connection.cursor()
-
+    cursor=connection.cursor()        
+    
+    #root (shor or asset)
+    elementDataRoot = (
+        name,  
+        str(inPath),
+        '',  
+        outPath,  
+        0, 
+        None)
+    insertElementData(tablePath=tablePath,data=elementDataRoot,cursor=cursor)
     for config in configs:
-        compare(config=config,folderStructure=folderStructure,parentPath=inPath)
-            
-           
-            #a = getFilesData(fullPath)
-            #print(a)   
-
-    connection.commit()
+        compare(config=config,folderStructure=folderStructure,parentPath=inPath,cursor=cursor)
     connection.close()
-    
-    #pprint.pp(folderStructure)
+           
 
-test(tablePath='F:\\Fool_server\\fool_server\\data\\files_db\\sequences\\testDb.db',name='sh0010',inPath=inPath,configs=shotConfig)
+'''inPath = 'C:\\Users\\laure\\OneDrive\\Bureau\\05_shit\\SQ0010\\SH0010'
+sequencePath = Path('C:\\Users\\laure\\OneDrive\\Bureau\\05_shit\\SQ0010')
+for shotPath in sequencePath.iterdir():
+    shotName = str(shotPath).split('\\')[-1]
+    test(tablePath='F:\\Fool_server\\fool_server\\data\\files_db\\sequences\\testDb.db',name=shotName,inPath=shotPath,configs=shotConfig)
+'''
+tb = 'F:\\Fool_server\\fool_server\\data\\files_db\\sequences\\testDb.db'
+async def getRoots(tablePath,manageConnection:bool,cursor = None)->list[str]:
+    if manageConnection:
+        connection = sqlite3.connect(tablePath)
+        cursor = connection.cursor()
 
-def insertElement(path:str):
-    pass
-    
-def insertFile():
-    pass
+    query = '''SELECT name 
+            FROM elementsTable
+            WHERE parentId IS NULL'''
+
+    cursor.execute(query)
+    roots = cursor.fetchall()
+    print(roots)
+
+    for i,element in enumerate(roots):
+        roots[i] = roots[i][0]
+    print(roots)
+
+    if manageConnection:
+        cursor.close()
+getRoots(tablePath=tb,manageConnection=True)
