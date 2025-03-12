@@ -20,6 +20,7 @@ shot_template_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs\\05_shot\\_templat
 # --- --- Self paths
 server_path =  os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 databases_path = server_path + '\\data\\files_db'
+databasesPath = server_path + '\\data\\files_db'
 assets_db_path = server_path + '\\data\\files_db\\assets'
 sequences_db_path = server_path + '\\data\\files_db\\sequences'
 

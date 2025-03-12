@@ -5,7 +5,7 @@
 #check the first layer of elements and create database for each
 #fill database with the data using the config file
 78
-import sqlite3,json,pprint,os
+import sqlite3,json,pprint,os,aiosqlite,asyncio
 from pathlib import Path
 import datetime 
 from data import global_variables
@@ -52,25 +52,25 @@ def createTable(dbCreationPath:str,db_name:str):
     connection.close()
 
 
-createTable(dbCreationPath=global_variables.sequences_db_path,db_name='testDb.db')
+
 
 def getFileData(filePath: str) -> tuple:
     """
     Returns a tuple with file information in this order:
-    name, type, path, size, creation_date, last_modification, parent, children
+    name, path,type, size, last_modification
     """
     file = Path(filePath)
     file_stat = file.stat()
     name = file.name.split('\\')[-1]
-    type = "folder" if file.is_dir() else file.suffix.lstrip('.') or "unknown"
+    type = 'Folder' if file.is_dir() else file.suffix.lstrip('.') or "unknown"
     path = str(file.resolve())
-    size = "0MB" if file.is_dir() else f"{round(file_stat.st_size / (1024 * 1024), 2)}MB"
+    size = '' if file.is_dir() else f"{round(file_stat.st_size / (1024 * 1024), 2)}MB"
 
     
-    creation_date = str(datetime.datetime.fromtimestamp(file_stat.st_birthtime))
+    #creation_date = str(datetime.datetime.fromtimestamp(file_stat.st_birthtime))
     last_modification = str(datetime.datetime.fromtimestamp(file_stat.st_mtime))
     #fool_ID = str(uuid.uuid4())
-    parent = str(file.parent)
+    #parent = str(file.parent)
 
     # Return as a tuple
     return (
@@ -81,7 +81,7 @@ def getFileData(filePath: str) -> tuple:
         last_modification,
     )
 
-
+#--- ---
 
 def getFilesData(filePath:str)->list[tuple]:
     '''
@@ -93,7 +93,7 @@ def getFilesData(filePath:str)->list[tuple]:
         filesData.append(getFileData(filePath=file))
     return filesData
 
-
+#--- ---
 
 def insertElementData(tablePath:str,data:tuple,manageConnection:bool=True,cursor=None):
     if manageConnection:
@@ -113,7 +113,7 @@ def insertElementData(tablePath:str,data:tuple,manageConnection:bool=True,cursor
         connection.close()
     return elementId
 
-
+#--- ---
 
 def insertFileData(tablePath:str,data:tuple,manageConnection:bool = True,parentId:int = 0,cursor = None):
 
@@ -133,7 +133,7 @@ def insertFileData(tablePath:str,data:tuple,manageConnection:bool = True,parentI
         connection.commit()
         connection.close()
 
-
+#--- ---
 
 def insertFilesData(tablePath:str,filesData:list[tuple],manageConnection:bool = True,parentId:int = None,cursor = None):
 
@@ -158,7 +158,7 @@ def insertFilesData(tablePath:str,filesData:list[tuple],manageConnection:bool = 
         connection.commit()
         connection.close()
 
-
+#--- ---
 
 def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
     contentPath = os.path.join(inPath,outPath)
@@ -244,24 +244,37 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
     connection.close()
            
 
-'''inPath = 'C:\\Users\\laure\\OneDrive\\Bureau\\05_shit\\SQ0010\\SH0010'
-sequencePath = Path('C:\\Users\\laure\\OneDrive\\Bureau\\05_shit\\SQ0010')
-for shotPath in sequencePath.iterdir():
-    shotName = str(shotPath).split('\\')[-1]
-    test(tablePath='F:\\Fool_server\\fool_server\\data\\files_db\\sequences\\testDb.db',name=shotName,inPath=shotPath,configs=shotConfig)
-'''
+global_variables.databasesPath
+createTable(dbCreationPath=global_variables.sequences_db_path,db_name='testDb.db')
+
+sequencesPath = Path('C:\\Users\\laure\\OneDrive\\Bureau\\05_shit\\SQ0010')
+for sequence in  global_variables.sequences:
+
+    sequencePath = Path(sequencesPath + sequence)
+    dbName = sequence + '.db'
+    dbPath = global_variables.databases_path + dbName
+    if os.path.exists()  :
+    
+            createTable(dbCreationPath=global_variables.sequences_db_path,db_name='testDb.db')
+
+    for shotPath in sequencePath.iterdir():
+
+        shotName = str(shotPath).split('\\')[-1]
+        test(tablePath='F:\\Fool_server\\fool_server\\data\\files_db\\sequences\\testDb.db',name=shotName,inPath=shotPath,configs=shotConfig)
+
 tb = 'F:\\Fool_server\\fool_server\\data\\files_db\\sequences\\testDb.db'
+
 async def getRoots(tablePath,manageConnection:bool,cursor = None)->list[str]:
     if manageConnection:
-        connection = sqlite3.connect(tablePath)
-        cursor = connection.cursor()
+        connection = await aiosqlite.connect(tablePath)
+        cursor = await connection.cursor()
 
     query = '''SELECT name 
             FROM elementsTable
             WHERE parentId IS NULL'''
 
-    cursor.execute(query)
-    roots = cursor.fetchall()
+    await cursor.execute(query)
+    roots = await cursor.fetchall()
     print(roots)
 
     for i,element in enumerate(roots):
@@ -269,5 +282,8 @@ async def getRoots(tablePath,manageConnection:bool,cursor = None)->list[str]:
     print(roots)
 
     if manageConnection:
-        cursor.close()
-getRoots(tablePath=tb,manageConnection=True)
+        await cursor.close()
+
+    return roots
+
+
