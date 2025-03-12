@@ -5,20 +5,18 @@
 #check the first layer of elements and create database for each
 #fill database with the data using the config file
 78
-import sqlite3,json,pprint,os,aiosqlite,asyncio
+import sqlite3,json,pprint,os,aiosqlite,asyncio,aiosqlite
 from pathlib import Path
 import datetime 
 from data import global_variables
 #need to rename here
 
-with open ('F:\\Fool_server\\fool_server\\data\\config\\shotConfig.json') as file:
-    shotConfig = json.load(file)
 
 
 
-def createTable(dbCreationPath:str,db_name:str):
+def createDb(dbCreationPath:str):
 
-    connection = sqlite3.connect(dbCreationPath+'\\'+db_name)
+    connection = sqlite3.connect(dbCreationPath)
     cursor=connection.cursor()
 
     cursor.execute('PRAGMA foreign_keys = ON;')
@@ -50,8 +48,6 @@ def createTable(dbCreationPath:str,db_name:str):
     cursor.executescript(query)
     connection.commit()
     connection.close()
-
-
 
 
 def getFileData(filePath: str) -> tuple:
@@ -95,9 +91,9 @@ def getFilesData(filePath:str)->list[tuple]:
 
 #--- ---
 
-def insertElementData(tablePath:str,data:tuple,manageConnection:bool=True,cursor=None):
+def insertElementData(dbPath:str,data:tuple,manageConnection:bool=True,cursor=None):
     if manageConnection:
-        connection = sqlite3.connect(tablePath)
+        connection = sqlite3.connect(dbPath)
         cursor = connection.cursor()
 
     query = '''
@@ -115,10 +111,10 @@ def insertElementData(tablePath:str,data:tuple,manageConnection:bool=True,cursor
 
 #--- ---
 
-def insertFileData(tablePath:str,data:tuple,manageConnection:bool = True,parentId:int = 0,cursor = None):
+def insertFileData(dbPath:str,data:tuple,manageConnection:bool = True,parentId:int = 0,cursor = None):
 
     if manageConnection is True:
-            connection = sqlite3.connect(tablePath)
+            connection = sqlite3.connect(dbPath)
             cursor=connection.cursor()
     print(data,parentId)
     fullData = data + (parentId,)
@@ -135,15 +131,15 @@ def insertFileData(tablePath:str,data:tuple,manageConnection:bool = True,parentI
 
 #--- ---
 
-def insertFilesData(tablePath:str,filesData:list[tuple],manageConnection:bool = True,parentId:int = None,cursor = None):
+def insertFilesData(dbPath:str,filesData:list[tuple],manageConnection:bool = True,parentId:int = None,cursor = None):
 
     if manageConnection is True:
-            connection = sqlite3.connect(tablePath)
+            connection = sqlite3.connect(dbPath)
             cursor=connection.cursor()
 
     fullData = []
     for fileData in filesData:
-        print(parentId)
+        #print(parentId)
         fullFileData = fileData + (parentId,)
         fullData.append(fullFileData)
 
@@ -160,7 +156,7 @@ def insertFilesData(tablePath:str,filesData:list[tuple],manageConnection:bool = 
 
 #--- ---
 
-def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
+def populateDbs(dbPath:str,configs:list,name:str,inPath:str,outPath:str = ''):
     contentPath = os.path.join(inPath,outPath)
 
     def getFolderStructure(path:str)->dict:
@@ -170,9 +166,6 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
             if entry.is_dir():
                 structure[entry.name] = getFolderStructure(entry.path)
         return structure
-    
-    folderStructure = getFolderStructure(path=contentPath)
-
 
     def compare(cursor,config:dict,folderStructure,parentPath=''):
 
@@ -181,7 +174,6 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
             
             fullPath = os.path.join(parentPath, config['inPath'])
             if not fullPath.endswith(config['outPath']):
-                print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
                 fullPath = os.path.join(parentPath, config['inPath'],config['outPath'])
 
             parentId=0
@@ -190,16 +182,19 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
                 query = '''SELECT id FROM elementsTable WHERE fullPath = ?'''
                 cursor.execute(query, (str(parentPath),))
                 result = cursor.fetchone()
+
+        
                 if result:
                     parentId = result[0]
                 else:
                     parentId = None
 
-            print('--- --- ---')
+            '''print('--- --- ---')
             print(fullPath)
             print(parentPath)
             print(parentId)
-            print('--- --- ---')
+            print('--- --- ---')'''
+
             elementData = (
             config['name'],  
             fullPath,
@@ -210,8 +205,8 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
 
             filesData = getFilesData(fullPath)
         
-            parentId = insertElementData(tablePath=tablePath,data=elementData,manageConnection=False,cursor=cursor)
-            insertFilesData(tablePath=tablePath,filesData=filesData,parentId=parentId,manageConnection=False,cursor=cursor)
+            parentId = insertElementData(dbPath=dbPath,data=elementData,manageConnection=False,cursor=cursor)
+            insertFilesData(dbPath=dbPath,filesData=filesData,parentId=parentId,manageConnection=False,cursor=cursor)
             
             connection.commit()
             
@@ -227,8 +222,10 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
                 for childConfig in config['childrenElements']:
                     compare(cursor=cursor,config=childConfig,folderStructure=currentStructure,parentPath=fullPath)
             
-    connection = sqlite3.connect(tablePath)
-    cursor=connection.cursor()        
+    folderStructure = getFolderStructure(path=contentPath)
+
+    connection = sqlite3.connect(dbPath)
+    cursor= connection.cursor()        
     
     #root (shor or asset)
     elementDataRoot = (
@@ -238,35 +235,52 @@ def test(tablePath:str,configs:list,name:str,inPath:str,outPath:str = ''):
         outPath,  
         0, 
         None)
-    insertElementData(tablePath=tablePath,data=elementDataRoot,cursor=cursor)
+    
+    insertElementData(dbPath=dbPath,data=elementDataRoot,cursor=cursor)
     for config in configs:
         compare(config=config,folderStructure=folderStructure,parentPath=inPath,cursor=cursor)
     connection.close()
            
 
-global_variables.databasesPath
-createTable(dbCreationPath=global_variables.sequences_db_path,db_name='testDb.db')
+import time
+import concurrent.futures
 
-sequencesPath = Path('C:\\Users\\laure\\OneDrive\\Bureau\\05_shit\\SQ0010')
-for sequence in  global_variables.sequences:
+start = time.time()
+config = os.path.join(global_variables.configsPath,'shotConfig.json')
+with open (config) as file:
+    shotConfig = json.load(file)
 
-    sequencePath = Path(sequencesPath + sequence)
-    dbName = sequence + '.db'
-    dbPath = global_variables.databases_path + dbName
-    if os.path.exists()  :
-    
-            createTable(dbCreationPath=global_variables.sequences_db_path,db_name='testDb.db')
+sequencesPath = Path(global_variables.sequencesPath)
 
-    for shotPath in sequencePath.iterdir():
+with concurrent.futures.ThreadPoolExecutor() as executor:
+    futures = []
 
-        shotName = str(shotPath).split('\\')[-1]
-        test(tablePath='F:\\Fool_server\\fool_server\\data\\files_db\\sequences\\testDb.db',name=shotName,inPath=shotPath,configs=shotConfig)
+    for sequence in global_variables.sequences:
+        sequencePath = Path(os.path.join(global_variables.sequencesPath, sequence))
+        dbName = sequence + '.db'
+        dbPath = os.path.join(global_variables.sequencesDbPath, dbName)
 
-tb = 'F:\\Fool_server\\fool_server\\data\\files_db\\sequences\\testDb.db'
+        if not os.path.exists(dbPath):
+            createDb(dbCreationPath=dbPath)
 
-async def getRoots(tablePath,manageConnection:bool,cursor = None)->list[str]:
+        for subElementPath in sequencePath.iterdir():
+            subElementName = str(subElementPath).split('\\')[-1]
+
+            future = executor.submit(populateDbs, dbPath, shotConfig, subElementName, subElementPath)
+            futures.append(future)
+
+    concurrent.futures.wait(futures)
+
+
+
+
+end = time.time()
+
+print(f'time elapsed ----->{end-start}s')
+
+async def getRoots(dbPath,manageConnection:bool,cursor = None)->list[str]:
     if manageConnection:
-        connection = await aiosqlite.connect(tablePath)
+        connection = await aiosqlite.connect(dbPath)
         cursor = await connection.cursor()
 
     query = '''SELECT name 

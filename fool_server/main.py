@@ -31,7 +31,6 @@ for asset_type in global_variables.assets_types:
                                asset_type=asset_type_name ,
                                table_path=table_path)
 
-
 watchdog_thread = threading.Thread(target=watchdog, args=(Path(global_variables.assets_path),), daemon=True)
 watchdog_thread.start()
 
