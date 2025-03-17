@@ -7,6 +7,7 @@ import aiosqlite
 from pathlib import Path
 import threading
 
+from api.query import queryRouter
 from api.sequences import sequences_router
 from modules.db_interactions.populate_files_db import populate_assets_db,populate_assets_content_db
 from modules.db_interactions.assets_updates_2 import watchdog
@@ -18,7 +19,7 @@ port = global_variables.port
 
 databases_path = global_variables.assets_db_path
 
-for asset_type in global_variables.assets_types:
+'''for asset_type in global_variables.assets_types:
     asset_type_path = global_variables.assets_path + '\\' + asset_type
 
     asset_type_name = str(asset_type_path).split('\\')[-1]
@@ -33,7 +34,7 @@ for asset_type in global_variables.assets_types:
 
 watchdog_thread = threading.Thread(target=watchdog, args=(Path(global_variables.assets_path),), daemon=True)
 watchdog_thread.start()
-
+'''
 
 
 
@@ -232,6 +233,7 @@ async def get_path_of_file(asset_type:str,file:str):
 
 
 project_router.include_router(sequences_router)
+project_router.include_router(queryRouter)
 app.include_router(project_router)
         
 uvicorn.run(app, host=global_variables.host, port=global_variables.port)

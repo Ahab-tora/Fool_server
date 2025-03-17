@@ -1,0 +1,82 @@
+Date : 2025-03-16 23:38:56
+Directory : f:\Fool_server
+Total : 42 files,  2429 codes, 164 comments, 697 blanks, all 3290 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Python   |         40 |      1,922 |        164 |        697 |      2,783 |
+| JSON     |          2 |        507 |          0 |          0 |        507 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                   | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                      |         42 |      2,429 |        164 |        697 |      3,290 |
+| fool_server                                                                            |         42 |      2,429 |        164 |        697 |      3,290 |
+| fool_server (Files)                                                                    |          9 |        662 |         57 |        245 |        964 |
+| fool_server\api                                                                        |          5 |        232 |         34 |         93 |        359 |
+| fool_server\data                                                                       |          5 |        585 |         23 |         26 |        634 |
+| fool_server\data (Files)                                                               |          3 |         78 |         23 |         26 |        127 |
+| fool_server\data\config                                                                |          2 |        507 |          0 |          0 |        507 |
+| fool_server\modules                                                                    |         21 |        841 |         48 |        319 |      1,208 |
+| fool_server\modules (Files)                                                            |          1 |          0 |          0 |          1 |          1 |
+| fool_server\modules\config                                                             |          2 |         56 |          0 |         13 |         69 |
+| fool_server\modules\db_interactions                                                    |         14 |        755 |         48 |        282 |      1,085 |
+| fool_server\modules\db_interactions (Files)                                            |          9 |        556 |         35 |        200 |        791 |
+| fool_server\modules\db_interactions\sequences                                          |          5 |        199 |         13 |         82 |        294 |
+| fool_server\modules\ftrack_interactions                                                |          2 |         21 |          0 |         21 |         42 |
+| fool_server\modules\utilities                                                          |          2 |          9 |          0 |          2 |         11 |
+| fool_server\test                                                                       |          2 |        109 |          2 |         14 |        125 |
++----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                               | language | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| f:\Fool_server\fool_server\__init__.py                                                 | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\api\__init__.py                                             | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\api\assets.py                                               | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\api\query.py                                                | Python   |         73 |         11 |         21 |        105 |
+| f:\Fool_server\fool_server\api\sequences.py                                            | Python   |        118 |         12 |         49 |        179 |
+| f:\Fool_server\fool_server\api\vars.py                                                 | Python   |         41 |         11 |         21 |         73 |
+| f:\Fool_server\fool_server\assetConfigBuild.py                                         | Python   |         53 |          7 |         17 |         77 |
+| f:\Fool_server\fool_server\assets_db_init.py                                           | Python   |         18 |          2 |          6 |         26 |
+| f:\Fool_server\fool_server\data\__init__.py                                            | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\data\config\assetsConfig.json                               | JSON     |        316 |          0 |          0 |        316 |
+| f:\Fool_server\fool_server\data\config\sequencesConfig.json                            | JSON     |        191 |          0 |          0 |        191 |
+| f:\Fool_server\fool_server\data\global_variables.py                                    | Python   |         56 |         13 |         17 |         86 |
+| f:\Fool_server\fool_server\data\global_variables_OS.py                                 | Python   |         22 |         10 |          8 |         40 |
+| f:\Fool_server\fool_server\elementsTest.py                                             | Python   |        100 |         14 |         29 |        143 |
+| f:\Fool_server\fool_server\main.py                                                     | Python   |        170 |          1 |         69 |        240 |
+| f:\Fool_server\fool_server\modules\__init__.py                                         | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\modules\config\fileStucture.py                              | Python   |          3 |          0 |          0 |          3 |
+| f:\Fool_server\fool_server\modules\config\structures.py                                | Python   |         53 |          0 |         13 |         66 |
+| f:\Fool_server\fool_server\modules\db_interactions\END_data.py                         | Python   |          2 |          0 |          0 |          2 |
+| f:\Fool_server\fool_server\modules\db_interactions\__init__.py                         | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\modules\db_interactions\assets_updates.py                   | Python   |        104 |          6 |         32 |        142 |
+| f:\Fool_server\fool_server\modules\db_interactions\assets_updates_2.py                 | Python   |         65 |          6 |         18 |         89 |
+| f:\Fool_server\fool_server\modules\db_interactions\create_tables.py                    | Python   |         67 |          0 |         15 |         82 |
+| f:\Fool_server\fool_server\modules\db_interactions\db_updates.py                       | Python   |         41 |          3 |         22 |         66 |
+| f:\Fool_server\fool_server\modules\db_interactions\insert_data.py                      | Python   |         56 |          2 |         21 |         79 |
+| f:\Fool_server\fool_server\modules\db_interactions\populate_files_db.py                | Python   |         48 |          2 |         31 |         81 |
+| f:\Fool_server\fool_server\modules\db_interactions\query_data.py                       | Python   |        173 |         16 |         60 |        249 |
+| f:\Fool_server\fool_server\modules\db_interactions\sequences\__init__.py               | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\modules\db_interactions\sequences\create_sequence_tables.py | Python   |         33 |          0 |          8 |         41 |
+| f:\Fool_server\fool_server\modules\db_interactions\sequences\insert_data_sequences.py  | Python   |         37 |          2 |         16 |         55 |
+| f:\Fool_server\fool_server\modules\db_interactions\sequences\populate_sequences_db.py  | Python   |         10 |          0 |         17 |         27 |
+| f:\Fool_server\fool_server\modules\db_interactions\sequences\query_data_sequences.py   | Python   |        119 |         11 |         40 |        170 |
+| f:\Fool_server\fool_server\modules\ftrack_interactions\__init__.py                     | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\modules\ftrack_interactions\create_ftrack.py                | Python   |         21 |          0 |         20 |         41 |
+| f:\Fool_server\fool_server\modules\utilities\__init.py                                 | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\modules\utilities\wrappers.py                               | Python   |          9 |          0 |          1 |         10 |
+| f:\Fool_server\fool_server\sequences_db_init.py                                        | Python   |         19 |          1 |          9 |         29 |
+| f:\Fool_server\fool_server\shotConfigBuild.py                                          | Python   |         53 |         13 |         17 |         83 |
+| f:\Fool_server\fool_server\test1.py                                                    | Python   |         45 |          1 |         20 |         66 |
+| f:\Fool_server\fool_server\test2.py                                                    | Python   |        204 |         18 |         77 |        299 |
+| f:\Fool_server\fool_server\test\__init__.py                                            | Python   |          0 |          0 |          1 |          1 |
+| f:\Fool_server\fool_server\test\search_test.py                                         | Python   |        109 |          2 |         13 |        124 |
+| Total                                                                                  |          |      2,429 |        164 |        697 |      3,290 |
++----------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

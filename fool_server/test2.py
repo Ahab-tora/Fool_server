@@ -79,11 +79,11 @@ def getFileData(filePath: str) -> tuple:
 
 #--- ---
 
-def getFilesData(filePath:str)->list[tuple]:
+def getFilesData(folderPath:str)->list[tuple]:
     '''
     get the data of all the files in a folder
     '''
-    yieldPath = Path(filePath)
+    yieldPath = Path(folderPath)
     filesData = []
     for file in yieldPath.iterdir():
         filesData.append(getFileData(filePath=file))
@@ -189,12 +189,6 @@ def populateDbs(dbPath:str,configs:list,name:str,inPath:str,outPath:str = ''):
                 else:
                     parentId = None
 
-            '''print('--- --- ---')
-            print(fullPath)
-            print(parentPath)
-            print(parentId)
-            print('--- --- ---')'''
-
             elementData = (
             config['name'],  
             fullPath,
@@ -203,7 +197,7 @@ def populateDbs(dbPath:str,configs:list,name:str,inPath:str,outPath:str = ''):
             config.get('layer', 0), 
             parentId)
 
-            filesData = getFilesData(fullPath)
+            filesData = getFilesData(folderPath=fullPath)
         
             parentId = insertElementData(dbPath=dbPath,data=elementData,manageConnection=False,cursor=cursor)
             insertFilesData(dbPath=dbPath,filesData=filesData,parentId=parentId,manageConnection=False,cursor=cursor)
@@ -250,15 +244,16 @@ config = os.path.join(global_variables.configsPath,'shotConfig.json')
 with open (config) as file:
     shotConfig = json.load(file)
 
-sequencesPath = Path(global_variables.sequencesPath)
+#sequencesPath = Path(global_variables.sequencesPath)
+#sequencesPath = Path(global_variables.testPath)
 
-with concurrent.futures.ThreadPoolExecutor() as executor:
+'''with concurrent.futures.ThreadPoolExecutor() as executor:
     futures = []
 
-    for sequence in global_variables.sequences:
-        sequencePath = Path(os.path.join(global_variables.sequencesPath, sequence))
+    for sequence in ['SQ0010','SQ0020']:
+        sequencePath = Path(os.path.join(global_variables.testPath, sequence))
         dbName = sequence + '.db'
-        dbPath = os.path.join(global_variables.sequencesDbPath, dbName)
+        dbPath = os.path.join(global_variables.databasesPath, dbName)
 
         if not os.path.exists(dbPath):
             createDb(dbCreationPath=dbPath)
@@ -269,7 +264,7 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
             future = executor.submit(populateDbs, dbPath, shotConfig, subElementName, subElementPath)
             futures.append(future)
 
-    concurrent.futures.wait(futures)
+    concurrent.futures.wait(futures)'''
 
 
 

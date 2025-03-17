@@ -9,6 +9,27 @@ example: '\\\\Storage\\movieName'
 """
 
 # --- --- Config
+'''
+dict containing each elements types and data 
+path -> where the data is queried
+types -> databases names and the 'first layer' inside the path
+templatePath -> template of what is contained insied the types
+'''
+elementData ={
+    'sequences':{
+                'path':'',
+                'types':['SQ0010','SQ0020'],
+                'templatePath': '\\\\Storage\\esma\\3D4\\threeLittlePigs\\05_shot\\_template_workspace_shot'
+
+    },
+    'assets':{
+            'path':'',
+            'types':['character','item','prop','set'],
+            'templatePath': '\\\\Storage\\esma\\3D4\\threeLittlePigs\\04_asset\\template\\_template_workspace_asset'
+    }
+
+}
+
 #--- assets
 assets_types = 'character','item','prop','set'
 asset_template_path = '\\\\Storage\\esma\\3D4\\threeLittlePigs\\04_asset\\template\\_template_workspace_asset'
@@ -27,6 +48,7 @@ assets_db_path = server_path + '\\data\\files_db\\assets'
 sequences_db_path = server_path + '\\data\\files_db\\sequences'
 sequencesDbPath = server_path + '\\data\\files_db\\sequences'
 
+testPath = 'C:\\Users\\laure\\OneDrive\\Bureau\\05_shit'
 configsPath = serverPath + '\\data\\config'
 
 # --- --- Pipeline paths
@@ -52,7 +74,7 @@ sequences_houdini_departments = 'abc','audio','comp','desk','flip','geo','hdz','
 version = '1.0.20253005'
 
 # --- --- Server
-host = '10.69.240.231'
+host = '192.168.56.1'
 port  = 8000
 router_prefix = "/END"
 
